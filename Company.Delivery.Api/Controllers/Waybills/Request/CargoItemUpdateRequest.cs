@@ -5,6 +5,7 @@ namespace Company.Delivery.Api.Controllers.Waybills.Request;
 /// </summary>
 public class CargoItemUpdateRequest
 {
+    // Возможно стоит добавить Id для удобства в методе update, но не уверен требуется ли это по задаче, поэтому не добавил
     /// <summary>
     /// Number
     /// </summary>

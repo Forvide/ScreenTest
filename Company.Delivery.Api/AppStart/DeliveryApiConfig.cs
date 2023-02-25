@@ -7,23 +7,28 @@ namespace Company.Delivery.Api.AppStart;
 
 internal static class DeliveryApiConfig
 {
-    public static void AddDeliveryApi(this IServiceCollection services) => services.AddSwaggerGen(options =>
+    public static void AddDeliveryApi(this IServiceCollection services)
     {
-        var executingAssembly = Assembly.GetExecutingAssembly();
-
-        var targetFramework = executingAssembly.GetCustomAttribute<TargetFrameworkAttribute>();
-        var frameworkName = targetFramework is null ? string.Empty : " (" + targetFramework.FrameworkDisplayName + ")";
-        var description = "An ASP.NET Core" + frameworkName + " Web API";
-
-        options.SwaggerDoc("v1", new OpenApiInfo
+        services.AddSwaggerGen(options =>
         {
-            Title = "Delivery API",
-            Description = description
+            var executingAssembly = Assembly.GetExecutingAssembly();
+
+            var targetFramework = executingAssembly.GetCustomAttribute<TargetFrameworkAttribute>();
+            var frameworkName = targetFramework is null ? string.Empty : " (" + targetFramework.FrameworkDisplayName + ")";
+            var description = "An ASP.NET Core" + frameworkName + " Web API";
+
+            options.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "Delivery API",
+                Description = description
+            });
+
+            var xmlFilename = $"{executingAssembly.GetName().Name}.xml";
+            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });
 
-        var xmlFilename = $"{executingAssembly.GetName().Name}.xml";
-        options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-    });
+        services.AddAutoMapper(Assembly.GetAssembly(typeof(Program)));
+    }
 
     public static void UseDeliveryApi(this IApplicationBuilder builder)
     {
